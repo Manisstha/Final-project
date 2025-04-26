@@ -1,12 +1,12 @@
 <script setup>
-import LoginScreen from '@/components/LoginScreen.vue';
+import SignIn from '@/components/SignIn.vue';
+import SignUp from '@/components/SignUp.vue';
 </script>
 
 <template>
-  <LoginScreen />
+  <!-- <SignIn /> -->
+  <SignUp />
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-}
 </style>
