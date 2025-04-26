@@ -41,12 +41,21 @@
           Sign In
         </button>
       </form>
-      <a href="#" class="block mb-14 text-[#216ce7] font-medium"
-        >Forgot password?</a
+      <router-link
+        to="/auth/forgot-password"
+        class="block mb-14 text-[#216ce7] font-medium"
       >
+        Forgot password?
+      </router-link>
+      <!-- <a href="#" class="block mb-14 text-[#216ce7] font-medium"
+        >Forgot password?</a
+      > -->
       <footer class="text-[#9ca2ae]">
-        Need an account? Sign up
-        <a href="#" class="text-[#216ce7] font-medium">here</a>
+        Need an account?
+        <router-link to="/auth/signup" class="text-[#216ce7] font-medium"
+          >Sign up here</router-link
+        >
+        <!-- <a href="#" class="text-[#216ce7] font-medium">here</a> -->
       </footer>
     </div>
   </div>
