@@ -1,22 +1,13 @@
 <script setup>
 import { RouterLink, RouterView } from "vue-router";
-import HelloWorld from "./components/HelloWorld.vue";
+import SignIn from "@/components/SignIn.vue";
+import SignUp from "@/components/SignUp.vue";
+import ForgotPassword from "@/components/ForgotPassword.vue";
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+  <router-view />
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-}
 </style>
