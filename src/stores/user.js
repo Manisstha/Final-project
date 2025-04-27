@@ -1,12 +1,32 @@
-import { ref, computed } from 'vue'
-import { defineStore } from 'pinia'
-
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
-
-  return { count, doubleCount, increment }
-})
+import { defineStore } from 'pinia';
+import { supabase } from '../supabase';
+ 
+export const useUserStore = defineStore('user', {
+  state: () => ({
+    user: null,
+  }),
+ 
+  actions: {
+    async fetchUser () {
+      const user = await supabase.auth.user();
+      this.user = user
+    },
+    async signUp (email, password) {
+      const { user, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+      });
+      if (error) throw error;
+      if (user) this.user = user;
+    },
+    persist: {
+      enabled: true,
+      strategies: [
+        {
+          key: 'user',
+          storage: localStorage
+        }
+      ]
+    },
+ }
+});

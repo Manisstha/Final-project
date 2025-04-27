@@ -42,7 +42,7 @@
             lock
           </span>
           <input
-            type="confirm password"
+            type="password"
             placeholder="Confirm Password"
             class="w-full h-[56px] rounded-[8px] text-base text-inherit border-0 pl-10 pr-4 py-0 placeholder-[#9ca2ae] bg-gray-100 focus:outline-none focus:border-2 focus:border-[#226ce7]"
           />
