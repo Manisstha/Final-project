@@ -1,54 +1,24 @@
 import { supabase } from "@/api/index";
 
-const TABLE_NAME = 'users'
-
-export const getUserData = async () => {
-    try {
-        const { data, error } = await supabase
-            .from(TABLE_NAME)
-            .select()
-
-        if (error) {
-            throw new Error(error.message)
-        }
-
-        return data
-    } catch (err) {
-        console.log(err)
-        return [];
-    }
-
+export const signUpUser = async (email, password) => {
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) throw error
+    return data
 }
 
-export const createUser = async (email, password) => {
-    try {
-        const { data, error } = await supabase
-            .from(TABLE_NAME)
-            .insert({ email, password })
-
-        if (error) {
-            throw new Error(error.message)
-        }
-        return data
-    } catch (err) {
-        console.log(err)
-        return [];
-    }
+export const signInUser = async (email, password) => {
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+    if (error) throw error
+    return data
 }
 
-export const updateUser = async (password) => {
-    try {
-        const { error } = await supabase
-            .from(TABLE_NAME)
-            .update({})
-            .eq()
-
-        if (error) {
-            throw new Error(error.message)
-        }
-        return data
-    } catch (err) {
-        console.log(err)
-        return [];
-    }
+export const getCurrentUser = async () => {
+    const { data, error } = await supabase.auth.getUser()
+    if (error) throw error
+    return data.user
 }
+
+export const signOutUser = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+};
