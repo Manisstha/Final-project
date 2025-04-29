@@ -12,6 +12,7 @@ const password = ref("");
 const confirmPassword = ref("");
 const showPassword = ref(false);
 const showConfirmPassword = ref(false);
+const showSuccess = ref(false);
 const errorMessage = ref("");
 
 const capitalizedError = computed(() =>
@@ -40,8 +41,9 @@ const handleSignUp = async () => {
     errorMessage.value = error.message;
     return;
   }
+  showSuccess.value = true;
 
-  router.push("/auth/signin");
+  // router.push("/auth/signin");
 };
 </script>
 
@@ -112,7 +114,6 @@ const handleSignUp = async () => {
         <button
           :disabled="userStore.loading"
           class="border-0 text-white bg-[#226ce7] grid place-items-center font-medium cursor-pointer w-full h-[56px] rounded-[8px] text-base"
-          @click.prevent="handleSignUp"
         >
           <span v-if="userStore.loading" class="loader"></span>
           <span v-else>Sign Up</span>
@@ -126,6 +127,29 @@ const handleSignUp = async () => {
         Back to Sign In
       </router-link>
     </div>
+  </div>
+  <div
+    v-if="showSuccess"
+    class="fixed top-0 left-0 w-screen h-screen bg-black/50 z-50 pointer-events-auto"
+  ></div>
+  <div
+    v-if="showSuccess"
+    class="fixed overflow-hidden z-50 m-0 w-[40vw] sm:max-w-[300px] px-[30px] py-[54px] rounded-[24px] text-center bg-white backdrop-blur-lg shadow-2xl"
+  >
+    <p class="text-[#226ce7] font-semibold text-center">
+      Registration successful!
+    </p>
+    <button
+      @click="
+        () => {
+          showSuccess = false;
+          router.push('/auth/signin');
+        }
+      "
+      class="mt-4 w-full bg-[#226ce7] text-white py-2 rounded cursor-pointer"
+    >
+      OK
+    </button>
   </div>
 </template>
 
