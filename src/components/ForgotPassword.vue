@@ -1,11 +1,8 @@
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "@/stores/user";
-import { supabase } from "@/api";
 
 const router = useRouter();
-const userStore = useUserStore();
 const email = ref("");
 const showSuccess = ref(false);
 const errorMessage = ref("");
@@ -18,19 +15,12 @@ const capitalizedError = computed(() =>
 
 const handleForgotPassword = async () => {
   errorMessage.value = "";
+
   if (!email.value) {
     errorMessage.value = "Email is required";
     return;
   }
 
-  userStore.loading = true;
-  const { error } = await supabase.auth.resetPasswordForEmail(email.value);
-  userStore.loading = false;
-
-  if (error) {
-    errorMessage.value = error.message;
-    return;
-  }
   showSuccess.value = true;
 };
 </script>
@@ -57,16 +47,14 @@ const handleForgotPassword = async () => {
           <input
             v-model="email"
             type="email"
-            placeholder="Username"
+            placeholder="Email"
             class="w-full h-[56px] rounded-[8px] text-base text-inherit border-0 pl-10 pr-4 py-0 placeholder-[#9ca2ae] bg-gray-100 focus:outline-none focus:border-2 focus:border-[#226ce7]"
           />
         </div>
         <button
-          :disabled="userStore.loading"
           class="border-0 text-white bg-[#226ce7] grid place-items-center font-medium cursor-pointer w-full h-[56px] rounded-[8px] text-base"
         >
-          <span v-if="userStore.loading" class="loader"></span>
-          <span v-else>Recover your password</span>
+          Recover your password
         </button>
         <p v-if="errorMessage" class="text-red-500 text-base">
           {{ capitalizedError }}
@@ -101,21 +89,3 @@ const handleForgotPassword = async () => {
     </button>
   </div>
 </template>
-
-<style scoped>
-.loader {
-  width: 20px;
-  height: 20px;
-  border: 3px solid #fff;
-  border-top: 3px solid transparent;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-  margin: auto;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
