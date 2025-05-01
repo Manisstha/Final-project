@@ -42,8 +42,6 @@ const handleSignUp = async () => {
     return;
   }
   showSuccess.value = true;
-
-  // router.push("/auth/signin");
 };
 </script>
 
