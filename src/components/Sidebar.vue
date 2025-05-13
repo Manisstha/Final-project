@@ -11,260 +11,70 @@ const toggleOpen = () => {
 const setActive = (index) => {
   activeIndex.value = index;
 };
+
+const menuItems = [
+  { label: "Dashboard", icon: "dashboard" },
+  { label: "Favorite", icon: "star" },
+  { label: "Analytics", icon: "analytics" },
+  { label: "Message", icon: "message" },
+  { label: "Settings", icon: "settings" },
+];
 </script>
 
 <template>
-  <body>
-    <aside class="sidebar" :class="{ open: isOpen }">
-      <button class="toggle" type="button" @click="toggleOpen">
+  <div class="m-0 h-screen bg-[#f1f5fb] text-[#474f5c]">
+    <aside
+      class="absolute top-0 bottom-0 bg-white transition-all duration-300 overflow-hidden"
+      :class="isOpen ? 'w-[260px]' : 'w-[64px]'"
+    >
+      <button
+        type="button"
+        class="absolute z-10 top-6 -right-3 grid place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white"
+        :class="{ 'rotate-180': isOpen }"
+        @click="toggleOpen"
+      >
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
 
-      <div class="inner">
-        <div class="header">
-          <img src="@/assets/logo.png" class="logo" />
-          <h1>Lampo</h1>
+      <div class="absolute top-0 left-0 bottom-0 w-full">
+        <div
+          class="flex items-center h-[72px] px-5 rounded-t-lg transition-all duration-300 w-full"
+        >
+          <img src="@/assets/logo.png" class="h-7" />
+          <h1
+            class="ml-3 text-[18px] font-medium tracking-wide text-[#3e4145] transition-opacity duration-300"
+            :class="{ 'opacity-0': !isOpen, 'opacity-100': isOpen }"
+          >
+            To-Do Dash
+          </h1>
         </div>
 
-        <div class="search">
-          <span class="material-symbols-outlined">search</span>
-          <input type="text" placeholder="Search" />
-        </div>
-
-        <nav class="menu" :style="{ '--top': `${activeIndex.value * 56}px` }">
+        <nav class="relative grid mt-4">
+          <div
+            class="absolute left-1 w-1 h-[56px] bg-[#226ce7] transition-transform duration-300"
+            :style="{ transform: `translateY(${activeIndex * 56}px)` }"
+          ></div>
           <button
-            v-for="(item, index) in [
-              'Dashboard',
-              'Leaderboard',
-              'Monitoring',
-              'Analytics',
-              'Message',
-              'Settings',
+            v-for="(item, index) in menuItems"
+            :key="item.label"
+            class="flex items-center gap-4 h-[56px] px-[22px] text-[17px] capitalize transition-all duration-300 opacity-80 hover:opacity-100 hover:text-[#226ce7] cursor-pointer"
+            :class="[
+              'w-full',
+              activeIndex === index ? 'text-[#226ce7]' : '',
+              activeIndex === index && isOpen ? 'cursor-default' : '',
             ]"
-            :key="item"
-            :class="{ active: activeIndex.value === index }"
             @click="setActive(index)"
           >
-            <span class="material-symbols-outlined">{{
-              item.toLowerCase()
-            }}</span>
-            <p>{{ item }}</p>
+            <span class="material-symbols-outlined">{{ item.icon }}</span>
+            <p
+              class="transition-opacity duration-300"
+              :class="{ 'opacity-0': !isOpen, 'opacity-100': isOpen }"
+            >
+              {{ item.label }}
+            </p>
           </button>
         </nav>
       </div>
     </aside>
-  </body>
+  </div>
 </template>
-
-<style scoped>
-* {
-  box-sizing: border-box;
-}
-
-.sidebar {
-  --width-open: 260px;
-  --width-closed: 64px;
-}
-
-body {
-  margin: 0;
-  background: #6669bb;
-  color: #7a7b92;
-  font-family: "Euclid Circular A", "Poppins";
-}
-
-.sidebar button {
-  background: transparent;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.sidebar {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  bottom: 30px;
-  width: var(--width-closed);
-  border-radius: 16px;
-  background: #1e1b29;
-  transition: width 0.3s;
-}
-
-.sidebar.open {
-  width: var(--width-open);
-}
-
-button.toggle {
-  position: absolute;
-  z-index: 2;
-  top: 24px;
-  right: -12px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #2f2b43;
-  color: #8f8d9b;
-  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
-  transition: 0.3s;
-}
-
-.toggle:hover {
-  color: #f9f9f9;
-}
-
-.sidebar.open .toggle {
-  rotate: 180deg;
-}
-
-.sidebar .search {
-  position: relative;
-  padding: 16px 0;
-  margin: 0 10px 0;
-  width: calc(var(--width-closed) - 20px);
-  transition: 0.3s;
-}
-
-.sidebar.open .search {
-  width: calc(var(--width-open) - 20px);
-}
-
-.sidebar .search span {
-  position: absolute;
-  top: 26px;
-  left: 12px;
-  color: #68687a;
-}
-
-.sidebar .search input {
-  background: #2f2b43;
-  border: 0;
-  border-radius: 8px;
-  font-family: inherit;
-  width: 100%;
-  height: 44px;
-  font-size: 17px;
-  padding-left: 30px;
-  transition: 0.3s;
-}
-
-.sidebar .search input::placeholder {
-  color: rgb(255 255 255 / 0%);
-}
-
-.sidebar.open .search input::placeholder {
-  color: #68687a;
-}
-
-.sidebar.open .search input {
-  padding-left: 52px;
-}
-
-.sidebar .inner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 260px;
-}
-
-.sidebar .header {
-  display: flex;
-  align-items: center;
-  height: 72px;
-  width: var(--width-closed);
-  padding: 0 20px;
-  background: rgb(0 0 0 / 15%);
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
-  transition: 0.3s;
-}
-
-.sidebar.open .header {
-  width: var(--width-open);
-}
-
-.sidebar .header h1 {
-  margin-left: 12px;
-  font-weight: 500;
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: #f9f9f9;
-}
-
-.sidebar .logo {
-  height: 28px;
-}
-
-.sidebar .menu {
-  position: relative;
-  display: grid;
-}
-
-.sidebar .menu::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 4px;
-  height: 56px;
-  width: 4px;
-  background: #656aff;
-  translate: 0 var(--top);
-  transition: 0.3s;
-}
-
-.sidebar .menu button {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  height: 56px;
-  width: var(--width-closed);
-  font-size: 17px;
-  text-transform: capitalize;
-  line-height: 1;
-  padding: 0 22px;
-  color: inherit;
-  cursor: pointer;
-  opacity: 0.8;
-  transition: 0.3s;
-}
-
-.sidebar.open .menu button {
-  width: var(--width-open);
-}
-
-.sidebar .menu :is(button:hover, .active) {
-  color: rgb(255 255 255 / 100%);
-  opacity: 1;
-}
-
-.sidebar.open .menu .active {
-  cursor: default;
-}
-
-.sidebar .menu button:hover > span {
-  opacity: 1;
-}
-
-.sidebar .menu button p,
-.sidebar .header h1 {
-  opacity: 0;
-}
-
-.sidebar.open :is(.sidebar .menu button p, .sidebar .header h1) {
-  opacity: 1;
-}
-
-.sidebar.open .logo {
-  scale: 1;
-}
-
-.sidebar .menu button > img {
-  width: 24px;
-  height: 24px;
-}
-</style>
