@@ -22,9 +22,9 @@ const menuItems = [
 </script>
 
 <template>
-  <div class="m-0 h-screen bg-[#f1f5fb] text-[#474f5c]">
+  <div class="m-0 h-screen bg-[#f1f5fb] text-[#474f5c] relative">
     <aside
-      class="absolute top-0 bottom-0 bg-white transition-all duration-300 overflow-hidden"
+      class="absolute top-0 bottom-0 bg-white transition-all duration-300"
       :class="isOpen ? 'w-[260px]' : 'w-[64px]'"
     >
       <button
@@ -36,13 +36,13 @@ const menuItems = [
         <span class="material-symbols-outlined">chevron_right</span>
       </button>
 
-      <div class="absolute top-0 left-0 bottom-0 w-full">
+      <div class="absolute top-0 left-0 bottom-0 w-full overflow-hidden">
         <div
           class="flex items-center h-[72px] px-5 rounded-t-lg transition-all duration-300 w-full"
         >
           <img src="@/assets/logo.png" class="h-7" />
           <h1
-            class="ml-3 text-[18px] font-medium tracking-wide text-[#3e4145] transition-opacity duration-300"
+            class="ml-3 text-lg font-medium tracking-wide text-[#3e4145] transition-all duration-150 overflow-hidden whitespace-nowrap"
             :class="{ 'opacity-0': !isOpen, 'opacity-100': isOpen }"
           >
             To-Do Dash
@@ -58,11 +58,7 @@ const menuItems = [
             v-for="(item, index) in menuItems"
             :key="item.label"
             class="flex items-center gap-4 h-[56px] px-[22px] text-[17px] capitalize transition-all duration-300 opacity-80 hover:opacity-100 hover:text-[#226ce7] cursor-pointer"
-            :class="[
-              'w-full',
-              activeIndex === index ? 'text-[#226ce7]' : '',
-              activeIndex === index && isOpen ? 'cursor-default' : '',
-            ]"
+            :class="['w-full', activeIndex === index ? 'text-[#226ce7]' : '']"
             @click="setActive(index)"
           >
             <span class="material-symbols-outlined">{{ item.icon }}</span>
