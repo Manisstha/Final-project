@@ -1,11 +1,12 @@
+<script setup>
+import Sidebar from "@/components/Sidebar.vue";
+</script>
+
+
 <template>
-  <div class="dashoard-main-container">
-    <h1>This is Dashboard page</h1>
-  </div>
+  <Sidebar />
 </template>
 
 <style>
-@media (min-width: 1024px) {
 
-}
 </style>
