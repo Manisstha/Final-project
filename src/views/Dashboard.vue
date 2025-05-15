@@ -14,7 +14,7 @@ const sidebarOpen = ref(false);
   >
     <Sidebar @toggle="(val) => (sidebarOpen = val)" />
 
-    <div class="overflow-auto">
+    <div class="overflow-auto px-7 py-5">
       <OverviewBoard />
     </div>
   </div>
