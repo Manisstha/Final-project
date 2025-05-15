@@ -24,6 +24,13 @@ const tasks = ref([
     status: "In Progress",
     createdAt: "2025-05-05",
   },
+  {
+    id: 3,
+    title: "Completed Task",
+    description: "",
+    status: "Completed",
+    createdAt: "2025-05-06",
+  },
 ]);
 
 // New Task State
@@ -105,14 +112,19 @@ const deleteTask = (id) => {
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
     <!-- Column -->
     <div>
-      <h2 class="text-lg font-semibold mb-2 text-[#2d2f33]">To Do</h2>
+      <h2
+        class="text-lg font-semibold mb-2 text-[#2d2f33] flex items-center gap-2"
+      >
+        <span class="w-3 h-3 rounded-full bg-blue-400 inline-block"></span>
+        To Do
+      </h2>
 
       <!-- Add Task Card -->
-      <div class="bg-white border-none rounded-xl p-4 mb-4">
+      <div class="bg-white border-none shadow-sm rounded-xl p-4 mb-4">
         <button
           v-if="!showNewForm"
           @click="showNewForm = true"
-          class="flex items-center justify-center gap-2 text-[#2d2f33] font-medium not-[]:hover:underline cursor-pointer text-sm"
+          class="flex items-center justify-center gap-2 text-[#2d2f33] font-medium cursor-pointer text-sm"
         >
           <span class="material-symbols-outlined">add_circle</span>
           Add New Task
@@ -136,7 +148,10 @@ const deleteTask = (id) => {
             >
               Add
             </button>
-            <button @click="showNewForm = false" class="text-sm text-[#2d2f33] cursor-pointer">
+            <button
+              @click="showNewForm = false"
+              class="text-sm text-[#2d2f33] cursor-pointer"
+            >
               Cancel
             </button>
           </div>
@@ -164,7 +179,10 @@ const deleteTask = (id) => {
             >
               Save
             </button>
-            <button @click="cancelEdit" class="text-sm text-[#2d2f33] cursor-pointer">
+            <button
+              @click="cancelEdit"
+              class="text-sm text-[#2d2f33] cursor-pointer"
+            >
               Cancel
             </button>
           </div>
@@ -181,24 +199,94 @@ const deleteTask = (id) => {
 
     <!-- In Progress -->
     <div>
-      <h2 class="text-lg font-semibold mb-2 text-[#2d2f33]">In Progress</h2>
-      <TaskCard
-        v-for="task in filteredTasks('In Progress')"
-        :key="task.id"
-        :task="task"
-        @delete="deleteTask"
-      />
+      <h2
+        class="text-lg font-semibold mb-2 text-[#2d2f33] flex items-center gap-2"
+      >
+        <span class="w-3 h-3 rounded-full bg-yellow-400 inline-block"></span>
+        In Progress
+      </h2>
+      <div v-for="task in filteredTasks('In Progress')" :key="task.id">
+        <div
+          v-if="editingTaskId === task.id"
+          class="bg-white p-4 mb-4 rounded-xl"
+        >
+          <input
+            v-model="editedTitle"
+            class="w-full border rounded px-2 py-1 mb-2 text-sm"
+          />
+          <textarea
+            v-model="editedDescription"
+            class="w-full border rounded px-2 py-1 mb-2 text-sm"
+          />
+          <div class="flex gap-2">
+            <button
+              @click="saveEdit"
+              class="bg-[#226ce7] text-white px-3 py-1 text-sm rounded cursor-pointer"
+            >
+              Save
+            </button>
+            <button
+              @click="cancelEdit"
+              class="text-sm text-[#2d2f33] cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+        <TaskCard
+          v-else
+          :task="task"
+          @edit="editTask"
+          @favorite="favoriteTask"
+          @delete="deleteTask"
+        />
+      </div>
     </div>
 
     <!-- Completed -->
     <div>
-      <h2 class="text-lg font-semibold mb-2 text-[#2d2f33]">Completed</h2>
-      <TaskCard
-        v-for="task in filteredTasks('Completed')"
-        :key="task.id"
-        :task="task"
-        @delete="deleteTask"
-      />
+      <h2
+        class="text-lg font-semibold mb-2 text-[#2d2f33] flex items-center gap-2"
+      >
+        <span class="w-3 h-3 rounded-full bg-green-400 inline-block"></span>
+        Completed
+      </h2>
+      <div v-for="task in filteredTasks('Completed')" :key="task.id">
+        <div
+          v-if="editingTaskId === task.id"
+          class="bg-white p-4 mb-4 rounded-xl"
+        >
+          <input
+            v-model="editedTitle"
+            class="w-full border rounded px-2 py-1 mb-2 text-sm"
+          />
+          <textarea
+            v-model="editedDescription"
+            class="w-full border rounded px-2 py-1 mb-2 text-sm"
+          />
+          <div class="flex gap-2">
+            <button
+              @click="saveEdit"
+              class="bg-[#226ce7] text-white px-3 py-1 text-sm rounded cursor-pointer"
+            >
+              Save
+            </button>
+            <button
+              @click="cancelEdit"
+              class="text-sm text-[#2d2f33] cursor-pointer"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+        <TaskCard
+          v-else
+          :task="task"
+          @edit="editTask"
+          @favorite="favoriteTask"
+          @delete="deleteTask"
+        />
+      </div>
     </div>
   </div>
 </template>

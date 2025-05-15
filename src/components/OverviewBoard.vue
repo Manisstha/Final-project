@@ -42,7 +42,9 @@ const logout = () => {
           @click.stop="toggleMenu"
           class="flex items-center justify-center text-[32px] text-[#226ce7] hover:text-[#1b4ec7] transition-colors duration-200 cursor-pointer"
         >
-          <span class="material-symbols-outlined" style="font-size: 32px;">account_circle</span>
+          <span class="material-symbols-outlined" style="font-size: 32px"
+            >account_circle</span
+          >
         </button>
 
         <div
@@ -62,13 +64,18 @@ const logout = () => {
 
     <div class="flex justify-between items-center flex-wrap gap-4">
       <!-- Search input -->
-      <div class="flex items-center gap-2">
+      <div class="relative w-64">
         <input
           type="text"
           v-model="searchQuery"
           placeholder="Search tasks..."
-          class="border rounded px-3 py-1 text-sm w-64"
+          class="bg-white rounded-lg shadow-sm pl-3 pr-10 py-1 text-base w-full text-[#2d2f33] focus:outline-none"
         />
+        <button
+          class="absolute inset-y-0 right-2 flex items-center justify-center text-[#474f5c] hover:text-[#226ce7] cursor-pointer"
+        >
+          <span class="material-symbols-outlined">search</span>
+        </button>
       </div>
 
       <!-- Date inputs -->

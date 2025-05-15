@@ -50,7 +50,7 @@ const handleDelete = () => {
       </button>
       <button @click="handleFavorite">
         <span
-          class="material-icons cursor-pointer"
+          class="material-icons cursor-pointer text-[#474f5c]"
           :class="{ 'text-yellow-300': task.favorite }"
         >
           {{ task.favorite ? "star" : "star_border" }}
