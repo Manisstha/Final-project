@@ -84,13 +84,13 @@ const logout = () => {
         <input
           type="date"
           v-model="fromDate"
-          class="border rounded px-2 py-1 text-sm"
+          class="bg-white rounded-lg shadow-sm px-2 py-1 text-base text-[#2d2f33] focus:outline-none"
         />
         <label class="text-sm font-medium">To</label>
         <input
           type="date"
           v-model="toDate"
-          class="border rounded px-2 py-1 text-sm"
+          class="bg-white rounded-lg shadow-sm px-2 py-1 text-base text-[#2d2f33] focus:outline-none"
         />
       </div>
     </div>
