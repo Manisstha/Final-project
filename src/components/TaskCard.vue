@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from "vue";
 const props = defineProps({
   task: {
     type: Object,
@@ -6,7 +7,7 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["edit", "favorite", "delete"]);
+const emit = defineEmits(["edit", "favorite", "delete", "statusChange"]);
 
 const handleEdit = () => {
   emit("edit", props.task.id);
@@ -18,6 +19,17 @@ const handleFavorite = () => {
 
 const handleDelete = () => {
   emit("delete", props.task.id);
+};
+
+const statusOptions = ["To Do", "In Progress", "Completed"];
+
+const otherStatuses = computed(() =>
+  statusOptions.filter((s) => s !== props.task.status)
+);
+
+const onStatusChange = (event) => {
+  const newStatus = event.target.value;
+  emit("statusChange", { id: props.task.id, status: newStatus });
 };
 </script>
 
@@ -32,20 +44,28 @@ const handleDelete = () => {
           {{ task.description }}
         </p>
       </div>
-      <span
-        class="text-xs rounded px-2 py-1 font-medium whitespace-nowrap"
-        :class="{
-          'bg-blue-100 text-blue-700': task.status === 'To Do',
-          'bg-yellow-100 text-yellow-700': task.status === 'In Progress',
-          'bg-green-100 text-green-700': task.status === 'Completed',
-        }"
-      >
-        {{ task.status }}
-      </span>
+      <div class="relative">
+        <select
+          class="text-xs rounded px-2 py-1 font-medium appearance-none cursor-pointer bg-opacity-50"
+          :class="{
+            'bg-blue-100 text-blue-700': task.status === 'To Do',
+            'bg-yellow-100 text-yellow-700': task.status === 'In Progress',
+            'bg-green-100 text-green-700': task.status === 'Completed',
+          }"
+          @change="onStatusChange"
+        >
+          <option :value="task.status" disabled selected>
+            {{ task.status }}
+          </option>
+          <option v-for="status in otherStatuses" :key="status" :value="status">
+            {{ status }}
+          </option>
+        </select>
+      </div>
     </div>
 
     <div class="flex gap-2 justify-end">
-      <button @click="handleEdit" class="text-[#474f5c] cursor-pointer" >
+      <button @click="handleEdit" class="text-[#474f5c] cursor-pointer">
         <span class="material-symbols-outlined">edit</span>
       </button>
       <button @click="handleFavorite">

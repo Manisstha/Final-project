@@ -105,6 +105,14 @@ const cancelEdit = () => {
   editingTaskId.value = null;
 };
 
+const updateTaskStatus = async (id, newStatus) => {
+  const updated = await updateTask(id, { status: newStatus });
+  if (updated) {
+    const index = tasks.value.findIndex((t) => t.id === id);
+    if (index !== -1) tasks.value[index] = updated;
+  }
+};
+
 //Favorite task
 const favoriteTask = async (id) => {
   const task = tasks.value.find((t) => t.id === id);
@@ -206,11 +214,11 @@ const deleteTask = async (id) => {
           </div>
         </div>
         <TaskCard
-          v-else
           :task="task"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
+          @statusChange="({ id, status }) => updateTaskStatus(id, status)"
         />
       </div>
     </div>
@@ -252,11 +260,11 @@ const deleteTask = async (id) => {
           </div>
         </div>
         <TaskCard
-          v-else
           :task="task"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
+          @statusChange="({ id, status }) => updateTaskStatus(id, status)"
         />
       </div>
     </div>
@@ -298,11 +306,11 @@ const deleteTask = async (id) => {
           </div>
         </div>
         <TaskCard
-          v-else
           :task="task"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
+          @statusChange="({ id, status }) => updateTaskStatus(id, status)"
         />
       </div>
     </div>
