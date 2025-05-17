@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
-import { signUpUser, signInUser, getCurrentUser, signOutUser } from "@/api/userApi";
+import { supabase } from "@/api/index";
+import { signUpUser, signInUser, signOutUser } from "@/api/userApi";
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -34,10 +35,15 @@ export const useUserStore = defineStore('user', {
     },
     async loadUser() {
       try {
-        const user = await getCurrentUser();
-        this.user = user;
+        const { data, error } = await supabase.auth.getSession();
+        if (error || !data.session) {
+          this.user = null;
+        } else {
+          this.user = data.session.user;
+        }
       } catch (error) {
-        console.error("Failed to retrieve user:", error.message);
+        console.error("Failed to retrieve session:", error.message);
+        this.user = null;
       }
     },
     async logout() {

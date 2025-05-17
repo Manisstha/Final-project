@@ -1,12 +1,14 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch, defineEmits } from "vue";
 
+const emit = defineEmits(["toggle"]);
 const isOpen = ref(false);
-const activeIndex = ref(0);
 
 const toggleOpen = () => {
   isOpen.value = !isOpen.value;
+  emit("toggle", isOpen.value);
 };
+const activeIndex = ref(0);
 
 const setActive = (index) => {
   activeIndex.value = index;
@@ -24,8 +26,8 @@ const menuItems = [
 <template>
   <div class="m-0 h-screen bg-[#f1f5fb] text-[#474f5c] relative">
     <aside
-      class="absolute top-0 bottom-0 bg-white transition-all duration-300"
-      :class="isOpen ? 'w-[260px]' : 'w-[64px]'"
+      class="fixed top-0 bottom-0 bg-white transition-all duration-300"
+      :class="isOpen ? 'w-[240px]' : 'w-[64px]'"
     >
       <button
         type="button"
