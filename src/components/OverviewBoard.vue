@@ -37,6 +37,18 @@ const logout = async () => {
   await userStore.logout();
   router.push("/auth/signin");
 };
+
+function limitYearDigits(event, modelRef) {
+  const value = event.target.value;
+  const parts = value.split("-");
+
+  if (parts.length === 3 && parts[0].length > 4) {
+    parts[0] = parts[0].slice(0, 4);
+    const limitedValue = parts.join("-");
+    event.target.value = limitedValue;
+    modelRef.value = limitedValue;
+  }
+}
 </script>
 
 <template>
@@ -91,12 +103,14 @@ const logout = async () => {
         <input
           type="date"
           v-model="fromDate"
+          @input="(e) => limitYearDigits(e, fromDate)"
           class="bg-white rounded-lg shadow-sm px-2 py-1 text-base text-[#2d2f33] focus:outline-none"
         />
         <label class="text-sm font-medium">To</label>
         <input
           type="date"
           v-model="toDate"
+          @input="(e) => limitYearDigits(e, toDate)"
           class="bg-white rounded-lg shadow-sm px-2 py-1 text-base text-[#2d2f33] focus:outline-none"
         />
       </div>
