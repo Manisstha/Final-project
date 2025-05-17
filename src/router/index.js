@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Auth from '../views/Auth.vue'
 import Dashboard from '../views/Dashboard.vue'
+import { useUserStore } from '@/stores/user';
 
 const routes = [
   {
@@ -31,7 +32,8 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: { requiresAuth: true },
   }
 ]
 
@@ -39,5 +41,20 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
 })
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+
+
+  if (userStore.user === null) {
+    await userStore.loadUser();
+  }
+
+  if (to.meta.requiresAuth && !userStore.user) {
+    next({ name: 'SignIn' });
+  } else {
+    next();
+  }
+});
 
 export default router
