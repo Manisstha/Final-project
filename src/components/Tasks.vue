@@ -1,6 +1,14 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import TaskCard from "@/components/TaskCard.vue";
+import { supabase } from "@/api/index";
+import {
+  getAllTasks,
+  createTask,
+  updateTask,
+  deleteTask as deleteTaskApi,
+  toggleFavorite,
+} from "@/api/tasksApi";
 
 const props = defineProps({
   searchQuery: String,
@@ -8,32 +16,7 @@ const props = defineProps({
   toDate: String,
 });
 
-// Task list
-const tasks = ref([
-  {
-    id: 1,
-    title: "Example Task",
-    description: "This is a sample task",
-    status: "To Do",
-    createdAt: "2025-05-01",
-  },
-  {
-    id: 2,
-    title: "Progress Task",
-    description: "",
-    status: "In Progress",
-    createdAt: "2025-05-05",
-  },
-  {
-    id: 3,
-    title: "Completed Task",
-    description: "",
-    status: "Completed",
-    createdAt: "2025-05-06",
-  },
-]);
-
-// New Task State
+const tasks = ref([]);
 const newTitle = ref("");
 const newDescription = ref("");
 const showNewForm = ref(false);
@@ -43,16 +26,36 @@ const editingTaskId = ref(null);
 const editedTitle = ref("");
 const editedDescription = ref("");
 
+const user = ref(null);
+
+//GET tasks from db
+const fetchTasks = async () => {
+  const { data } = await supabase.auth.getUser();
+  user.value = data?.user;
+
+  if (!user.value?.id) {
+    console.error("User not logged in or userId missing");
+    return;
+  }
+
+  const tasksData = await getAllTasks(user.value.id);
+  tasks.value = tasksData;
+};
+
+onMounted(fetchTasks);
+
 // Add task
-const addTask = () => {
-  if (!newTitle.value.trim()) return;
-  tasks.value.unshift({
-    id: Date.now(),
-    title: newTitle.value,
-    description: newDescription.value,
-    status: "To Do",
-    createdAt: new Date().toISOString().split("T")[0],
-  });
+const addTask = async () => {
+  if (!newTitle.value.trim() || !user.value?.id) return;
+
+  const newTask = await createTask(
+    newTitle.value,
+    newDescription.value,
+    user.value.id
+  );
+  if (newTask) {
+    tasks.value.unshift(newTask);
+  }
   newTitle.value = "";
   newDescription.value = "";
   showNewForm.value = false;
@@ -81,12 +84,20 @@ const editTask = (id) => {
     editedDescription.value = task.description;
   }
 };
-const saveEdit = () => {
-  const task = tasks.value.find((t) => t.id === editingTaskId.value);
-  if (task) {
-    task.title = editedTitle.value;
-    task.description = editedDescription.value;
+
+const saveEdit = async () => {
+  const id = editingTaskId.value;
+  const updated = await updateTask(id, {
+    title: editedTitle.value,
+    description: editedDescription.value,
+  });
+
+  if (updated) {
+    const index = tasks.value.findIndex((t) => t.id === id);
+    if (index !== -1) tasks.value[index] = updated;
     editingTaskId.value = null;
+  } else {
+    console.error("Task update failed");
   }
 };
 
@@ -95,16 +106,23 @@ const cancelEdit = () => {
 };
 
 //Favorite task
-const favoriteTask = (id) => {
+const favoriteTask = async (id) => {
   const task = tasks.value.find((t) => t.id === id);
   if (task) {
-    task.favorite = !task.favorite;
+    const updated = await toggleFavorite(id, task.favorite);
+    if (updated) {
+      const index = tasks.value.findIndex((t) => t.id === id);
+      if (index !== -1) tasks.value[index] = updated;
+    }
   }
 };
 
 // Delete task
-const deleteTask = (id) => {
-  tasks.value = tasks.value.filter((t) => t.id !== id);
+const deleteTask = async (id) => {
+  const success = await deleteTaskApi(id);
+  if (success) {
+    tasks.value = tasks.value.filter((t) => t.id !== id);
+  }
 };
 </script>
 

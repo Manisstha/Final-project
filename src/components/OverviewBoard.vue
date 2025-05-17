@@ -1,6 +1,11 @@
 <script setup>
 import Tasks from "@/components/Tasks.vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
+import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+const router = useRouter();
 
 const fromDate = ref("");
 const toDate = ref("");
@@ -27,8 +32,10 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
 
-const logout = () => {
+const logout = async () => {
   menuOpen.value = false;
+  await userStore.logout();
+  router.push("/auth/signin");
 };
 </script>
 

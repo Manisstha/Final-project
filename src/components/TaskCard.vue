@@ -33,7 +33,7 @@ const handleDelete = () => {
         </p>
       </div>
       <span
-        class="text-xs rounded px-2 py-1 font-medium"
+        class="text-xs rounded px-2 py-1 font-medium whitespace-nowrap"
         :class="{
           'bg-blue-100 text-blue-700': task.status === 'To Do',
           'bg-yellow-100 text-yellow-700': task.status === 'In Progress',
