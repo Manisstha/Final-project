@@ -21,6 +21,9 @@ const newTitle = ref("");
 const newDescription = ref("");
 const showNewForm = ref(false);
 
+const addTitleError = ref({ title: "" });
+const editTitleError = ref({ title: "" });
+
 //Edit tasks
 const editingTaskId = ref(null);
 const editedTitle = ref("");
@@ -46,13 +49,20 @@ onMounted(fetchTasks);
 
 // Add task
 const addTask = async () => {
-  if (!newTitle.value.trim() || !user.value?.id) return;
+  addTitleError.value.title = "";
 
-  const newTask = await createTask(
-    newTitle.value,
-    newDescription.value,
-    user.value.id
-  );
+  const title = newTitle.value.trim();
+  const description = newDescription.value.trim();
+
+  if (!title) {
+    addTitleError.value.title = "Title is required.";
+  }
+
+  if (addTitleError.value.title) return;
+
+  if (!user.value?.id) return;
+
+  const newTask = await createTask(title, description, user.value.id);
   if (newTask) {
     tasks.value.unshift(newTask);
   }
@@ -86,6 +96,13 @@ const editTask = (id) => {
 };
 
 const saveEdit = async () => {
+  editTitleError.value.title = "";
+
+  if (!editedTitle.value.trim()) {
+    editTitleError.value.title = "Title is required.";
+    return;
+  }
+
   const id = editingTaskId.value;
   const updated = await updateTask(id, {
     title: editedTitle.value,
@@ -103,6 +120,14 @@ const saveEdit = async () => {
 
 const cancelEdit = () => {
   editingTaskId.value = null;
+  editTitleError.value.title = "";
+};
+
+const cancelNewTask = () => {
+  showNewForm.value = false;
+  newTitle.value = "";
+  newDescription.value = "";
+  addTitleError.value.title = "";
 };
 
 const updateTaskStatus = async (id, newStatus) => {
@@ -157,16 +182,26 @@ const deleteTask = async (id) => {
         </button>
 
         <div v-else class="space-y-2">
-          <input
-            v-model="newTitle"
-            placeholder="Task title"
-            class="w-full border rounded px-2 py-1 text-sm"
-          />
-          <textarea
-            v-model="newDescription"
-            placeholder="Description (optional)"
-            class="w-full border rounded px-2 py-1 text-sm"
-          ></textarea>
+          <div>
+            <input
+              v-model="newTitle"
+              maxlength="100"
+              placeholder="Task title"
+              class="w-full border rounded px-2 py-1 text-sm"
+            />
+            <p v-if="addTitleError.title" class="text-red-500 text-sm mt-1">
+              {{ addTitleError.title }}
+            </p>
+          </div>
+          <div>
+            <textarea
+              v-model="newDescription"
+              maxlength="500"
+              placeholder="Description (optional)"
+              class="w-full border rounded px-2 py-1 text-sm"
+            ></textarea>
+          </div>
+
           <div class="flex gap-2">
             <button
               @click="addTask"
@@ -175,7 +210,7 @@ const deleteTask = async (id) => {
               Add
             </button>
             <button
-              @click="showNewForm = false"
+              @click="cancelNewTask"
               class="text-sm text-[#2d2f33] cursor-pointer"
             >
               Cancel
@@ -190,14 +225,24 @@ const deleteTask = async (id) => {
           v-if="editingTaskId === task.id"
           class="bg-white p-4 mb-4 rounded-xl"
         >
-          <input
-            v-model="editedTitle"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
-          <textarea
-            v-model="editedDescription"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
+          <div>
+            <input
+              v-model="editedTitle"
+              maxlength="100"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+            <p v-if="editTitleError.title" class="text-red-500 text-sm mb-2">
+              {{ editTitleError.title }}
+            </p>
+          </div>
+          <div>
+            <textarea
+              v-model="editedDescription"
+              maxlength="500"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+          </div>
+
           <div class="flex gap-2">
             <button
               @click="saveEdit"
@@ -236,14 +281,23 @@ const deleteTask = async (id) => {
           v-if="editingTaskId === task.id"
           class="bg-white p-4 mb-4 rounded-xl"
         >
-          <input
-            v-model="editedTitle"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
-          <textarea
-            v-model="editedDescription"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
+          <div>
+            <input
+              v-model="editedTitle"
+              maxlength="100"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+            <p v-if="editTitleError.title" class="text-red-500 text-sm mb-2">
+              {{ editTitleError.title }}
+            </p>
+          </div>
+          <div>
+            <textarea
+              v-model="editedDescription"
+              maxlength="500"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+          </div>
           <div class="flex gap-2">
             <button
               @click="saveEdit"
@@ -282,14 +336,23 @@ const deleteTask = async (id) => {
           v-if="editingTaskId === task.id"
           class="bg-white p-4 mb-4 rounded-xl"
         >
-          <input
-            v-model="editedTitle"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
-          <textarea
-            v-model="editedDescription"
-            class="w-full border rounded px-2 py-1 mb-2 text-sm"
-          />
+          <div>
+            <input
+              v-model="editedTitle"
+              maxlength="100"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+            <p v-if="editTitleError.title" class="text-red-500 text-sm mb-2">
+              {{ editTitleError.title }}
+            </p>
+          </div>
+          <div>
+            <textarea
+              v-model="editedDescription"
+              maxlength="500"
+              class="w-full border rounded px-2 py-1 mb-2 text-sm"
+            />
+          </div>
           <div class="flex gap-2">
             <button
               @click="saveEdit"

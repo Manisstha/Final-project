@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineEmits } from "vue";
+import { ref, defineEmits } from "vue";
 
 const emit = defineEmits(["toggle"]);
 const isOpen = ref(false);
