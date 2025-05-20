@@ -32,6 +32,15 @@ const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
 };
 
+const clearSearchField = () => {
+  searchQuery.value = "";
+};
+
+const clearDateFields = () => {
+  fromDate.value = "";
+  toDate.value = "";
+};
+
 const logout = async () => {
   menuOpen.value = false;
   await userStore.logout();
@@ -91,9 +100,10 @@ function limitYearDigits(event, modelRef) {
           class="bg-white rounded-lg shadow-sm pl-3 pr-10 py-1 text-base w-full text-[#2d2f33] focus:outline-none"
         />
         <button
+          @click="clearSearchField"
           class="absolute inset-y-0 right-2 flex items-center justify-center text-[#474f5c] hover:text-[#226ce7] cursor-pointer"
         >
-          <span class="material-symbols-outlined">search</span>
+          <span class="material-symbols-outlined">cancel</span>
         </button>
       </div>
 
@@ -113,9 +123,19 @@ function limitYearDigits(event, modelRef) {
           @input="(e) => limitYearDigits(e, toDate)"
           class="bg-white rounded-lg shadow-sm px-2 py-1 text-base text-[#2d2f33] focus:outline-none"
         />
+        <button
+          @click="clearDateFields"
+          class="flex items-center justify-center text-[#474f5c] hover:text-[#226ce7] cursor-pointer"
+        >
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
       </div>
     </div>
-    <Tasks />
+    <Tasks
+      :search-query="searchQuery"
+      :from-date="fromDate"
+      :to-date="toDate"
+    />
   </div>
 </template>
 

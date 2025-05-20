@@ -76,11 +76,21 @@ const filteredTasks = (status) => {
   return tasks.value.filter((task) => {
     const matchesStatus = task.status === status;
     const matchesSearch = props.searchQuery
-      ? task.title.toLowerCase().includes(props.searchQuery.toLowerCase())
+      ? task.title?.toLowerCase().includes(props.searchQuery.toLowerCase()) ||
+        task.description
+          ?.toLowerCase()
+          .includes(props.searchQuery.toLowerCase())
       : true;
+
+    const formatDateOnly = (date) => {
+      const d = new Date(date);
+      return d.toISOString().split("T")[0];
+    };
+
     const matchesDate =
-      (!props.fromDate || task.createdAt >= props.fromDate) &&
-      (!props.toDate || task.createdAt <= props.toDate);
+      (!props.fromDate || formatDateOnly(task.created_at) >= props.fromDate) &&
+      (!props.toDate || formatDateOnly(task.created_at) <= props.toDate);
+
     return matchesStatus && matchesSearch && matchesDate;
   });
 };
