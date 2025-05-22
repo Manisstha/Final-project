@@ -1,5 +1,9 @@
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref, computed, defineEmits } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter();
+const route = useRoute();
 
 const emit = defineEmits(["toggle"]);
 const isOpen = ref(false);
@@ -8,19 +12,22 @@ const toggleOpen = () => {
   isOpen.value = !isOpen.value;
   emit("toggle", isOpen.value);
 };
-const activeIndex = ref(0);
-
-const setActive = (index) => {
-  activeIndex.value = index;
-};
 
 const menuItems = [
-  { label: "Dashboard", icon: "dashboard" },
-  { label: "Favorite", icon: "star" },
-  { label: "Analytics", icon: "analytics" },
-  { label: "Message", icon: "message" },
-  { label: "Settings", icon: "settings" },
+  { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
+  { label: "Analytics", icon: "analytics", route: "/analytics" },
+  { label: "Message", icon: "message", route: "/message" },
+  { label: "Export", icon: "file_export", route: "/export" },
+  { label: "Settings", icon: "settings", route: "/settings" },
 ];
+
+const activeIndex = computed(() =>
+  menuItems.findIndex((item) => route.path.startsWith(item.route))
+);
+
+const navigateTo = (routePath) => {
+  router.push(routePath);
+};
 </script>
 
 <template>
@@ -61,7 +68,7 @@ const menuItems = [
             :key="item.label"
             class="flex items-center gap-4 h-[56px] px-[22px] text-[17px] capitalize transition-all duration-300 opacity-80 hover:opacity-100 hover:text-[#226ce7] cursor-pointer"
             :class="['w-full', activeIndex === index ? 'text-[#226ce7]' : '']"
-            @click="setActive(index)"
+            @click="navigateTo(item.route)"
           >
             <span class="material-symbols-outlined">{{ item.icon }}</span>
             <p

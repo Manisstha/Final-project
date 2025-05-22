@@ -12,6 +12,7 @@ import {
 
 const props = defineProps({
   searchQuery: String,
+  showFavoritesOnly: Boolean,
   fromDate: String,
   toDate: String,
 });
@@ -91,7 +92,9 @@ const filteredTasks = (status) => {
       (!props.fromDate || formatDateOnly(task.created_at) >= props.fromDate) &&
       (!props.toDate || formatDateOnly(task.created_at) <= props.toDate);
 
-    return matchesStatus && matchesSearch && matchesDate;
+    const matchesFavorite = !props.showFavoritesOnly || task.favorite === true;
+
+    return matchesStatus && matchesSearch && matchesDate && matchesFavorite;
   });
 };
 

@@ -10,6 +10,11 @@ const router = useRouter();
 const fromDate = ref("");
 const toDate = ref("");
 const searchQuery = ref("");
+const showFavoritesOnly = ref(false);
+
+const myFavoriteTasks = () => {
+  showFavoritesOnly.value = !showFavoritesOnly.value;
+};
 
 const menuOpen = ref(false);
 const menuRef = ref(null);
@@ -91,19 +96,42 @@ function limitYearDigits(event, modelRef) {
     </div>
 
     <div class="flex justify-between items-center flex-wrap gap-4">
-      <!-- Search input -->
-      <div class="relative w-64">
-        <input
-          type="text"
-          v-model="searchQuery"
-          placeholder="Search tasks..."
-          class="bg-white rounded-lg shadow-sm pl-3 pr-10 py-1 text-base w-full text-[#2d2f33] focus:outline-none"
-        />
+      <div class="flex items-center gap-4">
+        <!-- Search input -->
+        <div class="relative w-64">
+          <input
+            type="text"
+            v-model="searchQuery"
+            placeholder="Search tasks..."
+            class="bg-white rounded-lg shadow-sm pl-3 pr-10 py-1 text-base w-full text-[#2d2f33] focus:outline-none"
+          />
+          <button
+            @click="clearSearchField"
+            class="absolute inset-y-0 right-2 flex items-center justify-center text-[#474f5c] hover:text-[#226ce7] cursor-pointer"
+          >
+            <span class="material-symbols-outlined">cancel</span>
+          </button>
+        </div>
+
+        <!-- Favorite filter button -->
         <button
-          @click="clearSearchField"
-          class="absolute inset-y-0 right-2 flex items-center justify-center text-[#474f5c] hover:text-[#226ce7] cursor-pointer"
+          @click="myFavoriteTasks"
+          class="bg-white rounded-lg shadow-sm flex items-center gap-1.5 pl-3 pr-10 py-1 text-base w-auto text-[#2d2f33] focus:outline-none hover:text-[#226ce7] cursor-pointer border-2"
+          :class="{
+            'border-[#4b8cf5]': showFavoritesOnly,
+            'border-none': !showFavoritesOnly,
+          }"
         >
-          <span class="material-symbols-outlined">cancel</span>
+          <span
+            class="material-icons"
+            :class="{
+              'text-yellow-300': showFavoritesOnly,
+              'text-[#474f5c]': !showFavoritesOnly,
+            }"
+          >
+            {{ showFavoritesOnly ? "star" : "star_border" }}
+          </span>
+          <span>My favorites</span>
         </button>
       </div>
 
@@ -133,6 +161,7 @@ function limitYearDigits(event, modelRef) {
     </div>
     <Tasks
       :search-query="searchQuery"
+      :show-favorites-only="showFavoritesOnly"
       :from-date="fromDate"
       :to-date="toDate"
     />
