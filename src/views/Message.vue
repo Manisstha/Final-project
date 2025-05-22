@@ -1,5 +1,5 @@
 <script setup>
-import Sidebar from "@/components/Sidebar.vue";;
+import Sidebar from "@/components/Sidebar.vue";
 import { ref } from "vue";
 
 const sidebarOpen = ref(false);
@@ -14,8 +14,13 @@ const sidebarOpen = ref(false);
 
     <div class="overflow-auto px-7 py-5">
       <h1 class="text-2xl font-semibold mb-6">Message</h1>
-      <img src="" />
+      <div class="flex items-center justify-center">
+        <img
+          class="w-auto h-full object-contain"
+          src="@\assets\Message_image\Message.png"
+        />
       </div>
     </div>
+  </div>
 </template>
 

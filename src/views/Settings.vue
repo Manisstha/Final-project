@@ -13,8 +13,12 @@ const sidebarOpen = ref(false);
     <Sidebar @toggle="(val) => (sidebarOpen = val)" />
 
     <div class="overflow-auto px-7 py-5">
-      <h1 class="text-2xl font-semibold mb-6">Settings</h1>
-      <img src="" />
+      <h1 class="text-2xl font-semibold">Export</h1>
+
+        <img
+          class="w-auto h-full object-contain"
+          src="@\assets\Settings_image\Settings.png"
+        />
     </div>
   </div>
 </template>

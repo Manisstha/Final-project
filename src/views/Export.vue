@@ -13,9 +13,14 @@ const sidebarOpen = ref(false);
     <Sidebar @toggle="(val) => (sidebarOpen = val)" />
 
     <div class="overflow-auto px-7 py-5">
-      <h1 class="text-2xl font-semibold mb-6">Export</h1>
-      <img src="" />
+      <h1 class="text-2xl font-semibold">Export</h1>
+      <div class="flex items-center justify-center">
+        <img
+          class="w-auto h-full object-contain"
+          src="@\assets\Export_image\Export.png"
+        />
       </div>
+    </div>
     </div>
 </template>
 

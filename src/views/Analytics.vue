@@ -18,25 +18,25 @@ const sidebarOpen = ref(false);
       <div class="flex flex-wrap justify-around py-13">
         <img
           class="w-full sm:w-1/2 md:w-1/3 h-[200px] object-contain"
-          src="@\assets\Analytics\ToDo.jpg"
+          src="@\assets\Analytics_image\ToDo.jpg"
         />
         <img
           class="w-full sm:w-1/2 md:w-1/3 h-[200px] object-contain"
-          src="@\assets\Analytics\InProgress.jpg"
+          src="@\assets\Analytics_image\InProgress.jpg"
         />
         <img
           class="w-full sm:w-1/2 md:w-1/3 h-[200px] object-contain"
-          src="@\assets\Analytics\Completed.jpg"
+          src="@\assets\Analytics_image\Completed.jpg"
         />
       </div>
       <div class="flex flex-wrap justify-around py-13">
         <img
           class="w-full md:w-[48%] h-[360px] object-contain"
-          src="@\assets\Analytics\Piechart.jpg"
+          src="@\assets\Analytics_image\Piechart.jpg"
         />
         <img
           class="w-full md:w-[48%] h-[360px] object-contain"
-          src="@\assets\Analytics\Graph.jpg"
+          src="@\assets\Analytics_image\Graph.jpg"
         />
       </div>
     </div>
