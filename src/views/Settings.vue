@@ -1,13 +1,11 @@
 <script setup>
 import Sidebar from "@/components/Sidebar.vue";
-import OverviewBoard from "@/components/OverviewBoard.vue";
 import { useSidebarStore } from "@/stores/sidebar";
 import { computed } from "vue";
 
 const sidebarStore = useSidebarStore();
 const isOpen = computed(() => sidebarStore.isOpen);
 </script>
-
 
 <template>
   <div
@@ -17,7 +15,13 @@ const isOpen = computed(() => sidebarStore.isOpen);
     <Sidebar />
 
     <div class="overflow-auto px-7 py-5">
-      <OverviewBoard />
+      <h1 class="text-2xl font-semibold">Settings</h1>
+
+      <img
+        class="w-auto h-full object-contain"
+        src="@\assets\Settings_image\Settings.png"
+      />
     </div>
   </div>
 </template>
+
