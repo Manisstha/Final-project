@@ -1,16 +1,16 @@
 <script setup>
-import { ref, computed, defineEmits } from "vue";
+import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useSidebarStore } from "@/stores/sidebar";
 
 const router = useRouter();
 const route = useRoute();
+const sidebarStore = useSidebarStore();
 
-const emit = defineEmits(["toggle"]);
-const isOpen = ref(false);
+const isOpen = computed(() => sidebarStore.isOpen);
 
 const toggleOpen = () => {
-  isOpen.value = !isOpen.value;
-  emit("toggle", isOpen.value);
+  sidebarStore.toggle();
 };
 
 const menuItems = [
@@ -38,7 +38,7 @@ const navigateTo = (routePath) => {
     >
       <button
         type="button"
-        class="absolute z-10 top-6 -right-3 grid place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white"
+        class="absolute z-10 top-6 -right-3 grid place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white cursor-pointer"
         :class="{ 'rotate-180': isOpen }"
         @click="toggleOpen"
       >

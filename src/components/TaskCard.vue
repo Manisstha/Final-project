@@ -5,9 +5,20 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  showConfirm: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-const emit = defineEmits(["edit", "favorite", "delete", "statusChange"]);
+const emit = defineEmits([
+  "edit",
+  "favorite",
+  "delete",
+  "statusChange",
+  "show-confirm",
+  "cancel-confirm",
+]);
 
 const handleEdit = () => {
   emit("edit", props.task.id);
@@ -15,6 +26,14 @@ const handleEdit = () => {
 
 const handleFavorite = () => {
   emit("favorite", props.task.id);
+};
+
+const confirmDelete = () => {
+  emit("show-confirm", props.task.id);
+};
+
+const cancelDelete = () => {
+  emit("cancel-confirm");
 };
 
 const handleDelete = () => {
@@ -34,7 +53,31 @@ const onStatusChange = (event) => {
 </script>
 
 <template>
-  <div class="bg-white rounded-xl shadow-sm border-none p-4 mb-4 space-y-2">
+  <div
+    class="bg-white rounded-xl shadow-sm border-none p-4 mb-4 space-y-2 relative"
+  >
+    <div
+      v-if="showConfirm"
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 m-0 sm:max-w-[300px] px-7 py-7 rounded-[24px] text-center bg-white backdrop-blur-lg shadow-2xl"
+    >
+      <p class="text-[#474f5c] font-semibold text-center">
+        Are you sure you want to delete this task?
+      </p>
+      <div class="flex justify-end gap-2">
+        <button
+          @click="handleDelete"
+          class="mt-4 w-full bg-[#226ce7] text-white py-2 rounded cursor-pointer"
+        >
+          Yes
+        </button>
+        <button
+          @click="cancelDelete"
+          class="mt-4 w-full bg-[#226ce7] text-white py-2 rounded cursor-pointer"
+        >
+          No
+        </button>
+      </div>
+    </div>
     <div class="flex justify-between items-start">
       <div>
         <h3 class="font-medium text-[#2d2f33]">
@@ -76,7 +119,7 @@ const onStatusChange = (event) => {
           {{ task.favorite ? "star" : "star_border" }}
         </span>
       </button>
-      <button @click="handleDelete" class="text-[#474f5c] cursor-pointer">
+      <button @click="confirmDelete" class="text-[#474f5c] cursor-pointer">
         <span class="material-symbols-outlined">delete</span>
       </button>
     </div>

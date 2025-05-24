@@ -30,6 +30,8 @@ const editingTaskId = ref(null);
 const editedTitle = ref("");
 const editedDescription = ref("");
 
+const confirmDeleteId = ref(null);
+
 const user = ref(null);
 
 //GET tasks from db
@@ -164,11 +166,20 @@ const favoriteTask = async (id) => {
 };
 
 // Delete task
+const showConfirmDelete = (id) => {
+  confirmDeleteId.value = id;
+};
+
+const cancelConfirmDelete = () => {
+  confirmDeleteId.value = null;
+};
+
 const deleteTask = async (id) => {
   const success = await deleteTaskApi(id);
   if (success) {
     tasks.value = tasks.value.filter((t) => t.id !== id);
   }
+  confirmDeleteId.value = null;
 };
 </script>
 
@@ -273,6 +284,9 @@ const deleteTask = async (id) => {
         </div>
         <TaskCard
           :task="task"
+          :showConfirm="confirmDeleteId === task.id"
+          @show-confirm="showConfirmDelete"
+          @cancel-confirm="cancelConfirmDelete"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
@@ -328,6 +342,9 @@ const deleteTask = async (id) => {
         </div>
         <TaskCard
           :task="task"
+          :showConfirm="confirmDeleteId === task.id"
+          @show-confirm="showConfirmDelete"
+          @cancel-confirm="cancelConfirmDelete"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
@@ -383,6 +400,9 @@ const deleteTask = async (id) => {
         </div>
         <TaskCard
           :task="task"
+          :showConfirm="confirmDeleteId === task.id"
+          @show-confirm="showConfirmDelete"
+          @cancel-confirm="cancelConfirmDelete"
           @edit="editTask"
           @favorite="favoriteTask"
           @delete="deleteTask"
