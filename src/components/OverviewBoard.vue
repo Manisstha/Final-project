@@ -1,6 +1,6 @@
 <script setup>
 import Tasks from "@/components/Tasks.vue";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 
@@ -17,24 +17,13 @@ const myFavoriteTasks = () => {
 };
 
 const menuOpen = ref(false);
-const menuRef = ref(null);
-
-const handleClickOutside = (event) => {
-  if (menuRef.value && !menuRef.value.contains(event.target)) {
-    menuOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("click", handleClickOutside);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("click", handleClickOutside);
-});
 
 const toggleMenu = () => {
   menuOpen.value = !menuOpen.value;
+};
+
+const closeMenu = () => {
+  menuOpen.value = false;
 };
 
 const clearSearchField = () => {
@@ -82,7 +71,7 @@ function limitYearDigits(event, modelRef) {
 
         <div
           v-if="menuOpen"
-          ref="menuRef"
+          v-click-outside="closeMenu"
           class="absolute right-0 w-40 bg-white rounded-lg shadow-lg border border-gray-100 z-50"
         >
           <button
@@ -96,7 +85,7 @@ function limitYearDigits(event, modelRef) {
     </div>
 
     <div class="flex justify-between items-center flex-wrap gap-4">
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4">
         <!-- Search input -->
         <div class="relative w-64">
           <input
@@ -136,7 +125,7 @@ function limitYearDigits(event, modelRef) {
       </div>
 
       <!-- Date inputs -->
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <label class="text-sm font-medium">From</label>
         <input
           type="date"

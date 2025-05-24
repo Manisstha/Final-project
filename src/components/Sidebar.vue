@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSidebarStore } from "@/stores/sidebar";
 
@@ -12,6 +12,21 @@ const isOpen = computed(() => sidebarStore.isOpen);
 const toggleOpen = () => {
   sidebarStore.toggle();
 };
+
+const handleResize = () => {
+  if (window.innerWidth < 640) {
+    sidebarStore.set(false);
+  }
+};
+
+onMounted(() => {
+  handleResize();
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 
 const menuItems = [
   { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
@@ -38,7 +53,7 @@ const navigateTo = (routePath) => {
     >
       <button
         type="button"
-        class="absolute z-10 top-6 -right-3 grid place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white cursor-pointer"
+        class="absolute hidden sm:grid z-10 top-6 -right-3 place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white cursor-pointer"
         :class="{ 'rotate-180': isOpen }"
         @click="toggleOpen"
       >

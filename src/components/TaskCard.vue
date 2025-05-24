@@ -58,6 +58,7 @@ const onStatusChange = (event) => {
   >
     <div
       v-if="showConfirm"
+      v-click-outside="cancelDelete"
       class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 m-0 sm:max-w-[300px] px-7 py-7 rounded-[24px] text-center bg-white backdrop-blur-lg shadow-2xl"
     >
       <p class="text-[#474f5c] font-semibold text-center">
