@@ -1,26 +1,48 @@
 <script setup>
-import { ref, watch, defineEmits } from "vue";
+import { computed, onMounted, onBeforeUnmount } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useSidebarStore } from "@/stores/sidebar";
 
-const emit = defineEmits(["toggle"]);
-const isOpen = ref(false);
+const router = useRouter();
+const route = useRoute();
+const sidebarStore = useSidebarStore();
+
+const isOpen = computed(() => sidebarStore.isOpen);
 
 const toggleOpen = () => {
-  isOpen.value = !isOpen.value;
-  emit("toggle", isOpen.value);
+  sidebarStore.toggle();
 };
-const activeIndex = ref(0);
 
-const setActive = (index) => {
-  activeIndex.value = index;
+const handleResize = () => {
+  if (window.innerWidth < 640) {
+    sidebarStore.set(false);
+  }
 };
+
+onMounted(() => {
+  handleResize();
+  window.addEventListener("resize", handleResize);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", handleResize);
+});
 
 const menuItems = [
-  { label: "Dashboard", icon: "dashboard" },
-  { label: "Favorite", icon: "star" },
-  { label: "Analytics", icon: "analytics" },
-  { label: "Message", icon: "message" },
-  { label: "Settings", icon: "settings" },
+  { label: "Dashboard", icon: "dashboard", route: "/dashboard" },
+  { label: "Analytics", icon: "analytics", route: "/analytics" },
+  { label: "Message", icon: "message", route: "/message" },
+  { label: "Export", icon: "file_export", route: "/export" },
+  { label: "Settings", icon: "settings", route: "/settings" },
 ];
+
+const activeIndex = computed(() =>
+  menuItems.findIndex((item) => route.path.startsWith(item.route))
+);
+
+const navigateTo = (routePath) => {
+  router.push(routePath);
+};
 </script>
 
 <template>
@@ -31,7 +53,7 @@ const menuItems = [
     >
       <button
         type="button"
-        class="absolute z-10 top-6 -right-3 grid place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white"
+        class="absolute hidden sm:grid z-10 top-6 -right-3 place-items-center w-6 h-6 rounded-full bg-[#226ce7] text-white/80 shadow-md transition-transform duration-300 hover:text-white cursor-pointer"
         :class="{ 'rotate-180': isOpen }"
         @click="toggleOpen"
       >
@@ -61,7 +83,7 @@ const menuItems = [
             :key="item.label"
             class="flex items-center gap-4 h-[56px] px-[22px] text-[17px] capitalize transition-all duration-300 opacity-80 hover:opacity-100 hover:text-[#226ce7] cursor-pointer"
             :class="['w-full', activeIndex === index ? 'text-[#226ce7]' : '']"
-            @click="setActive(index)"
+            @click="navigateTo(item.route)"
           >
             <span class="material-symbols-outlined">{{ item.icon }}</span>
             <p

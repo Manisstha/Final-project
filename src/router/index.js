@@ -1,6 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Auth from '../views/Auth.vue'
 import Dashboard from '../views/Dashboard.vue'
+import Analytics from '../views/Analytics.vue'
+import Message from '../views/Message.vue'
+import Export from '../views/Export.vue'
+import Settings from '../views/Settings.vue'
+import PageNotFound from '../views/PageNotFound.vue'
+
 import { useUserStore } from '@/stores/user';
 
 const routes = [
@@ -34,7 +40,32 @@ const routes = [
     name: 'Dashboard',
     component: Dashboard,
     meta: { requiresAuth: true },
-  }
+  },
+  {
+    path: '/analytics',
+    name: 'Analytics',
+    component: Analytics,
+    meta: { requiresAuth: true },
+  },
+    {
+    path: '/message',
+    name: 'Message',
+    component: Message,
+    meta: { requiresAuth: true },
+  },
+    {
+    path: '/export',
+    name: 'Export',
+    component: Export,
+    meta: { requiresAuth: true },
+    },
+    {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings,
+    meta: { requiresAuth: true },
+  },
+  { path: '/:pathMatch(.*)*', name: 'PageNotFound', component: PageNotFound}
 ]
 
 const router = createRouter({
