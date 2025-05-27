@@ -2,6 +2,13 @@
 
 A modern, responsive task management dashboard built with Vue 3, Pinia, Tailwind CSS, and Supabase.
 
+**Usage**
+- Sign Up / Sign In: Access via /auth/signup or /auth/signin.
+- Dashboard: Manage your tasks at /dashboard.
+- Analytics, Message, Export, Settings: Use the sidebar to navigate.
+- Sidebar: Click the arrow button to collapse/expand. The main view resizes automatically.
+- Session Persistence: You remain logged in after refreshing the page.
+
 ## Features
 
 - **User Authentication:** Sign up, sign in, and password recovery using Supabase Auth.
@@ -24,10 +31,3 @@ A modern, responsive task management dashboard built with Vue 3, Pinia, Tailwind
 - [Supabase](https://supabase.com/) (auth & database)
 - [Vite](https://vitejs.dev/) (build tool)
 
-
-Usage
-Sign Up / Sign In: Access via /auth/signup or /auth/signin.
-Dashboard: Manage your tasks at /dashboard.
-Analytics, Message, Export, Settings: Use the sidebar to navigate.
-Sidebar: Click the chevron to collapse/expand. The main view resizes automatically.
-Session Persistence: You remain logged in after refreshing the page.
