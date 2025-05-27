@@ -51,7 +51,7 @@ const toggleBtn = (key) => {
         <button
           @click="toggleBtn(key)"
           :class="[
-            'relative w-12 h-6 flex items-center rounded-full transition-colors duration-300 focus:outline-none',
+            'relative w-12 h-6 flex items-center rounded-full transition-colors duration-300 focus:outline-none cursor-pointer',
             settings[key] ? 'bg-[#226ce7]' : 'bg-gray-300',
           ]"
         >

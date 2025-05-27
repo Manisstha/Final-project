@@ -79,16 +79,19 @@ const onStatusChange = (event) => {
         </button>
       </div>
     </div>
-    <div class="flex justify-between items-start">
-      <div>
-        <h3 class="font-medium text-[#2d2f33]">
+    <div class="flex flex-wrap justify-between items-start gap-2">
+      <div class="min-w-0 flex-1">
+        <h3 class="font-medium text-[#2d2f33] break-words w-full">
           {{ task.title }}
         </h3>
-        <p v-if="task.description" class="text-sm text-gray-600 mt-1">
+        <p
+          v-if="task.description"
+          class="text-sm text-gray-600 mt-1 break-words w-full"
+        >
           {{ task.description }}
         </p>
       </div>
-      <div class="relative">
+      <div class="relative shrink-0">
         <select
           class="text-xs rounded px-2 py-1 font-medium appearance-none cursor-pointer bg-opacity-50"
           :class="{
@@ -98,7 +101,7 @@ const onStatusChange = (event) => {
           }"
           @change="onStatusChange"
         >
-          <option :value="task.status" disabled selected>
+          <option :value="task.status" hidden selected>
             {{ task.status }}
           </option>
           <option v-for="status in otherStatuses" :key="status" :value="status">
