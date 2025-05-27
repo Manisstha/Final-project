@@ -1,29 +1,33 @@
-# final-project
+# To-Do Dashboard
 
-This template should help get you started developing with Vue 3 in Vite.
+A modern, responsive task management dashboard built with Vue 3, Pinia, Tailwind CSS, and Supabase.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **User Authentication:** Sign up, sign in, and password recovery using Supabase Auth.
+- **Task Management:** Create, edit, delete, and favorite tasks.
+- **Task Status:** Organize tasks by status: To Do, In Progress, Completed.
+- **Filtering & Search:** Filter tasks by search, date, and favorites.
+- **Analytics:** Visual analytics with charts and images.
+- **Export & Messaging:** Dedicated views for exporting data and messaging.
+- **Settings:** Toggle dashboard features in the settings view.
+- **Responsive Sidebar:** Collapsible sidebar with smooth transitions.
+- **Persistent Sessions:** User stays logged in across page reloads.
+- **404 Page:** Friendly not-found page for invalid routes.
 
-## Customize configuration
+## Tech Stack
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- [Vue 3](https://vuejs.org/)
+- [Pinia](https://pinia.vuejs.org/) (state management)
+- [Vue Router](https://router.vuejs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Supabase](https://supabase.com/) (auth & database)
+- [Vite](https://vitejs.dev/) (build tool)
 
-## Project Setup
 
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+Usage
+Sign Up / Sign In: Access via /auth/signup or /auth/signin.
+Dashboard: Manage your tasks at /dashboard.
+Analytics, Message, Export, Settings: Use the sidebar to navigate.
+Sidebar: Click the chevron to collapse/expand. The main view resizes automatically.
+Session Persistence: You remain logged in after refreshing the page.
