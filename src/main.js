@@ -13,7 +13,7 @@ app.use(createPinia())
 app.use(router)
 
 const userStore = useUserStore();
-await userStore.loadUser();
+userStore.loadUser();
 
 app.directive("click-outside", clickOutside);
 app.mount('#app')
