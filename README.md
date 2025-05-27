@@ -6,7 +6,7 @@ A modern, responsive task management dashboard built with Vue 3, Pinia, Tailwind
 - Sign Up / Sign In: Access via /auth/signup or /auth/signin.
 - Dashboard: Manage your tasks at /dashboard.
 - Analytics, Message, Export, Settings: Use the sidebar to navigate.
-- Sidebar: Click the chevron to collapse/expand. The main view resizes automatically.
+- Sidebar: Click the arrow button to collapse/expand. The main view resizes automatically.
 - Session Persistence: You remain logged in after refreshing the page.
 
 ## Features
