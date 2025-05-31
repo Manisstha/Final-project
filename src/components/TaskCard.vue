@@ -50,7 +50,17 @@ const onStatusChange = (event) => {
   const newStatus = event.target.value;
   emit("statusChange", { id: props.task.id, status: newStatus });
 };
+
+const dateText = computed(() => {
+  if (!props.task.created_at) return "";
+  const createdDay = new Date(props.task.created_at);
+  const dateToday = new Date();
+  const dayDiff = Math.floor((dateToday - createdDay) / (1000 * 60 * 60 * 24));
+  if (dayDiff === 0) return `Created today`;
+  return `Created ${dayDiff} days ago`;
+});
 </script>
+
 
 <template>
   <div
@@ -112,6 +122,9 @@ const onStatusChange = (event) => {
     </div>
 
     <div class="flex gap-2 justify-end">
+      <span :title="dateText" class="material-symbols-outlined text-[#474f5c]"
+        >history</span
+      >
       <button @click="handleEdit" class="text-[#474f5c] cursor-pointer">
         <span class="material-symbols-outlined">edit</span>
       </button>
