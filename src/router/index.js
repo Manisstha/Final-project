@@ -47,25 +47,25 @@ const routes = [
     component: Analytics,
     meta: { requiresAuth: true },
   },
-    {
+  {
     path: '/message',
     name: 'Message',
     component: Message,
     meta: { requiresAuth: true },
   },
-    {
+  {
     path: '/export',
     name: 'Export',
     component: Export,
     meta: { requiresAuth: true },
-    },
-    {
+  },
+  {
     path: '/settings',
     name: 'Settings',
     component: Settings,
     meta: { requiresAuth: true },
   },
-  { path: '/:pathMatch(.*)*', name: 'PageNotFound', component: PageNotFound}
+  { path: '/:pathMatch(.*)*', name: 'PageNotFound', component: PageNotFound }
 ]
 
 const router = createRouter({
@@ -76,11 +76,14 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
 
-
   if (userStore.user === null) {
     await userStore.loadUser();
   }
 
+  if (userStore.user && to.path.startsWith('/auth')) {
+    next({ name: 'Dashboard' });
+    return;
+  }
   if (to.meta.requiresAuth && !userStore.user) {
     next({ name: 'SignIn' });
   } else {
