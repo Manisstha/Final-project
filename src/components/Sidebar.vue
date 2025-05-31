@@ -81,6 +81,7 @@ const navigateTo = (routePath) => {
           <button
             v-for="(item, index) in menuItems"
             :key="item.label"
+            :title="item.label"
             class="flex items-center gap-4 h-[56px] px-[22px] text-[17px] capitalize transition-all duration-300 opacity-80 hover:opacity-100 hover:text-[#226ce7] cursor-pointer"
             :class="['w-full', activeIndex === index ? 'text-[#226ce7]' : '']"
             @click="navigateTo(item.route)"
