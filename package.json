@@ -10,7 +10,11 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:e2e:debug": "playwright test --debug"
+    "test:e2e:debug": "playwright test --debug",
+    "allure:generate": "allure generate allure-results --clean",
+    "allure:open": "allure open allure-report",
+    "allure:serve": "allure serve allure-results",
+    "test:e2e:allure": "playwright test && npm run allure:serve"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -22,6 +26,7 @@
   "devDependencies": {
     "@playwright/test": "^1.54.2",
     "@vitejs/plugin-vue": "^5.2.3",
+    "allure-playwright": "^3.3.2",
     "autoprefixer": "^10.4.21",
     "jsdom": "^26.1.0",
     "postcss": "^8.5.3",
