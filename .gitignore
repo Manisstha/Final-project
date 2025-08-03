@@ -18,6 +18,14 @@ coverage
 /cypress/videos/
 /cypress/screenshots/
 
+# Playwright
+/test-results/
+/playwright-report/
+
+# Allure
+/allure-results/
+/allure-report/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

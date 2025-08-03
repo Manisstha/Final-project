@@ -1,115 +1,170 @@
 import { test, expect } from '@playwright/test';
+import { epic, feature, story, severity, tag, step } from 'allure-js-commons';
 
 test.describe('Login Tests', () => {
   test('should login with valid credentials', async ({ page }) => {
-    // Navigate to the application (will redirect to /auth/signin)
-    await page.goto('/');
+    epic('Authentication');
+    feature('Login');
+    story('Valid Login');
+    severity('critical');
+    tag('smoke');
+    tag('authentication');
     
-    // Wait for the sign in page to load
-    await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    await step('Navigate to the application', async () => {
+      await page.goto('/');
+    });
     
-    // Fill in the email field
-    const emailInput = page.locator('input[type="email"][placeholder="Email"]');
-    await emailInput.fill('test2@test.com');
+    await step('Verify sign in page is loaded', async () => {
+      await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    });
     
-    // Fill in the password field
-    const passwordInput = page.locator('input[placeholder="Password"]');
-    await passwordInput.fill('Test123');
+    await step('Enter valid credentials', async () => {
+      const emailInput = page.locator('input[type="email"][placeholder="Email"]');
+      await emailInput.fill('test2@test.com');
+      
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await passwordInput.fill('Test123');
+    });
     
-    // Submit the form
-    const submitButton = page.locator('button[type="submit"]:has-text("Sign In")');
-    await submitButton.click();
+    await step('Submit login form', async () => {
+      const submitButton = page.locator('button[type="submit"]:has-text("Sign In")');
+      await submitButton.click();
+    });
     
-    // Wait for navigation to dashboard after successful login
-    await expect(page).toHaveURL(/.*dashboard.*/, { timeout: 10000 });
-    
-    // Verify we're on the dashboard page
-    // You can add more specific assertions based on your dashboard content
-    await expect(page).toHaveURL('/dashboard');
+    await step('Verify successful login and navigation to dashboard', async () => {
+      await expect(page).toHaveURL(/.*dashboard.*/, { timeout: 10000 });
+      await expect(page).toHaveURL('/dashboard');
+    });
   });
 
   test('should show error with invalid credentials', async ({ page }) => {
-    // Navigate to the application (will redirect to /auth/signin)
-    await page.goto('/');
+    epic('Authentication');
+    feature('Login');
+    story('Invalid Login');
+    severity('critical');
+    tag('negative');
+    tag('authentication');
     
-    // Wait for the sign in page to load
-    await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    await step('Navigate to the application', async () => {
+      await page.goto('/');
+    });
     
-    // Fill in invalid credentials
-    const emailInput = page.locator('input[type="email"][placeholder="Email"]');
-    await emailInput.fill('invalid@test.com');
+    await step('Verify sign in page is loaded', async () => {
+      await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    });
     
-    const passwordInput = page.locator('input[placeholder="Password"]');
-    await passwordInput.fill('wrongpassword');
+    await step('Enter invalid credentials', async () => {
+      const emailInput = page.locator('input[type="email"][placeholder="Email"]');
+      await emailInput.fill('invalid@test.com');
+      
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await passwordInput.fill('wrongpassword');
+    });
     
-    // Submit the form
-    const submitButton = page.locator('button[type="submit"]:has-text("Sign In")');
-    await submitButton.click();
+    await step('Submit login form', async () => {
+      const submitButton = page.locator('button[type="submit"]:has-text("Sign In")');
+      await submitButton.click();
+    });
     
-    // Wait for error message to appear
-    const errorMessage = page.locator('p.text-red-500');
-    await expect(errorMessage).toBeVisible({ timeout: 5000 });
-    
-    // Verify error message contains relevant text
-    await expect(errorMessage).toContainText(/invalid|error|failed|wrong/i);
+    await step('Verify error message is displayed', async () => {
+      const errorMessage = page.locator('p.text-red-500');
+      await expect(errorMessage).toBeVisible({ timeout: 5000 });
+      await expect(errorMessage).toContainText(/invalid|error|failed|wrong/i);
+    });
   });
 
   test('should navigate to forgot password page', async ({ page }) => {
-    // Navigate to the application
-    await page.goto('/');
+    epic('Authentication');
+    feature('Navigation');
+    story('Forgot Password Navigation');
+    severity('normal');
+    tag('navigation');
+    tag('authentication');
     
-    // Wait for the sign in page to load
-    await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    await step('Navigate to the application', async () => {
+      await page.goto('/');
+    });
     
-    // Click on forgot password link
-    const forgotPasswordLink = page.locator('a:has-text("Forgot password?")');
-    await forgotPasswordLink.click();
+    await step('Verify sign in page is loaded', async () => {
+      await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    });
     
-    // Verify navigation to forgot password page
-    await expect(page).toHaveURL('/auth/forgot-password');
+    await step('Click forgot password link', async () => {
+      const forgotPasswordLink = page.locator('a:has-text("Forgot password?")');
+      await forgotPasswordLink.click();
+    });
+    
+    await step('Verify navigation to forgot password page', async () => {
+      await expect(page).toHaveURL('/auth/forgot-password');
+    });
   });
 
   test('should navigate to sign up page', async ({ page }) => {
-    // Navigate to the application
-    await page.goto('/');
+    epic('Authentication');
+    feature('Navigation');
+    story('Sign Up Navigation');
+    severity('normal');
+    tag('navigation');
+    tag('authentication');
     
-    // Wait for the sign in page to load
-    await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    await step('Navigate to the application', async () => {
+      await page.goto('/');
+    });
     
-    // Click on sign up link
-    const signUpLink = page.locator('a:has-text("Sign up here")');
-    await signUpLink.click();
+    await step('Verify sign in page is loaded', async () => {
+      await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    });
     
-    // Verify navigation to sign up page
-    await expect(page).toHaveURL('/auth/signup');
+    await step('Click sign up link', async () => {
+      const signUpLink = page.locator('a:has-text("Sign up here")');
+      await signUpLink.click();
+    });
+    
+    await step('Verify navigation to sign up page', async () => {
+      await expect(page).toHaveURL('/auth/signup');
+    });
   });
 
   test('should toggle password visibility', async ({ page }) => {
-    // Navigate to the application
-    await page.goto('/');
+    epic('Authentication');
+    feature('UI Components');
+    story('Password Visibility Toggle');
+    severity('minor');
+    tag('ui');
+    tag('authentication');
     
-    // Wait for the sign in page to load
-    await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    await step('Navigate to the application', async () => {
+      await page.goto('/');
+    });
     
-    // Fill in password
-    const passwordInput = page.locator('input[placeholder="Password"]');
-    await passwordInput.fill('Test123');
+    await step('Verify sign in page is loaded', async () => {
+      await expect(page.locator('h2:has-text("Sign In")')).toBeVisible();
+    });
     
-    // Verify password is hidden by default
-    await expect(passwordInput).toHaveAttribute('type', 'password');
+    await step('Enter password', async () => {
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await passwordInput.fill('Test123');
+    });
     
-    // Click the visibility toggle
-    const visibilityToggle = page.locator('.material-symbols-outlined:has-text("visibility")');
-    await visibilityToggle.click();
+    await step('Verify password is hidden by default', async () => {
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await expect(passwordInput).toHaveAttribute('type', 'password');
+    });
     
-    // Verify password is now visible
-    await expect(passwordInput).toHaveAttribute('type', 'text');
+    await step('Toggle password visibility to show', async () => {
+      const visibilityToggle = page.locator('.material-symbols-outlined:has-text("visibility")');
+      await visibilityToggle.click();
+      
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await expect(passwordInput).toHaveAttribute('type', 'text');
+    });
     
-    // Click the visibility toggle again
-    const visibilityOffToggle = page.locator('.material-symbols-outlined:has-text("visibility_off")');
-    await visibilityOffToggle.click();
-    
-    // Verify password is hidden again
-    await expect(passwordInput).toHaveAttribute('type', 'password');
+    await step('Toggle password visibility to hide', async () => {
+      const visibilityOffToggle = page.locator('.material-symbols-outlined:has-text("visibility_off")');
+      await visibilityOffToggle.click();
+      
+      const passwordInput = page.locator('input[placeholder="Password"]');
+      await expect(passwordInput).toHaveAttribute('type', 'password');
+    });
   });
 });
