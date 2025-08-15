@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock BEFORE importing userApi!
-vi.mock('../src/api/index', () => {
+// Mock BEFORE importing userApi! Use the same path that userApi.js imports.
+vi.mock('@/api/index', () => {
   const signUp = vi.fn();
   const signInWithPassword = vi.fn();
   const signOut = vi.fn();
@@ -16,8 +16,8 @@ vi.mock('../src/api/index', () => {
   };
 });
 
-import * as userApi from '../src/api/userApi';
-import { supabase } from '../src/api/index';
+import * as userApi from '@/api/userApi';
+import { supabase } from '@/api/index';
 
 describe('userApi', () => {
   beforeEach(() => {
