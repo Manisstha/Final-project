@@ -23,7 +23,7 @@ The project is already configured with Allure reporting. The following dependenc
 
 ### Playwright Configuration
 
-The `playwright.config.js` has been updated to include the Allure reporter:
+Playwright has been removed in favor of Cucumber.js executing Gherkin features directly with Playwright as a library. The existing allure-playwright reporter does not apply to Cucumber runs. To enable Allure for Cucumber, use a Cucumber formatter compatible with Allure (e.g., allure-cucumberjs or cucumber-json to allure adapter) and configure it in cucumber.cjs under the "format" section.
 
 ```javascript
 reporter: [
