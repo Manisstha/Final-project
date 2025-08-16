@@ -1,7 +1,7 @@
 name: E2E tests
 on:
   pull_request:
-    branches: [ main, dev ]
+    branches: [main, dev]
 
 jobs:
   e2e:
@@ -26,4 +26,5 @@ jobs:
         env:
           BASE_URL: https://finalproject-manish.netlify.app/
           HEADED: "0"
+          PLAYWRIGHT_HEADLESS: true
         run: npx cucumber-js -c cucumber.cjs
