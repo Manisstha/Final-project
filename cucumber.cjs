@@ -14,7 +14,7 @@ module.exports = {
 
     // Formatters
     format: [
-      'progress-bar'
+      process.env.CI ? 'progress' : 'progress-bar'
       // To enable HTML report, install '@cucumber/html-formatter' and add:
       // 'html:cucumber-report.html'
     ],

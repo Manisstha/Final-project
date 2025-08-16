@@ -11,7 +11,26 @@ export class PlaywrightWorld {
 
   async launch() {
     const launcher = { chromium, firefox, webkit }[this.browserName] || chromium;
-    this.browser = await launcher.launch({ headless: process.env.HEADED ? false : true });
+
+    const isTrue = (v) => {
+      if (v === undefined || v === null) return false;
+      if (typeof v === 'boolean') return v;
+      return ['1', 'true', 'yes', 'on'].includes(String(v).toLowerCase());
+    };
+
+    const headlessEnv = process.env.PLAYWRIGHT_HEADLESS;
+    const isCI = isTrue(process.env.CI);
+    const hasDisplay = !!process.env.DISPLAY || !!process.env.WAYLAND_DISPLAY;
+
+    const headless = headlessEnv !== undefined
+      ? isTrue(headlessEnv)
+      : isCI
+        ? true
+        : !hasDisplay
+          ? true
+          : !isTrue(process.env.HEADED);
+
+    this.browser = await launcher.launch({ headless });
     this.context = await this.browser.newContext();
     this.page = await this.context.newPage();
   }
