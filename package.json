@@ -16,10 +16,14 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
+    "test:bdd": "start-server-and-test dev http://localhost:5173 \"cucumber-js -c cucumber.cjs\"",
+    "test:bdd:headed": "cross-env HEADED=1 start-server-and-test dev http://localhost:5173 \"cucumber-js -c cucumber.cjs\"",
+    "test:bdd:tags": "start-server-and-test dev http://localhost:5173 \"cucumber-js -c cucumber.cjs --tags @smoke\"",
     "allure:generate": "allure generate allure-results --clean",
     "allure:open": "allure open allure-report",
     "allure:serve": "allure serve allure-results",
-    "test:e2e:allure": "playwright test && npm run allure:serve"
+    "test:e2e:allure": "playwright test && npm run allure:serve",
+    "test:bdd:allure": "echo \"Allure for Cucumber not configured. Install allure-cucumberjs and set formatter.\" && exit 0"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
@@ -34,6 +38,7 @@
     "allure-playwright": "^3.3.2",
     "autoprefixer": "^10.4.21",
     "jsdom": "^26.1.0",
+    "playwright-bdd": "^8.3.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4",
     "vite": "^6.2.4",
