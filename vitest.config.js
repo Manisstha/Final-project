@@ -16,7 +16,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./tests/vitest.setup.js'],
     include: ['tests/**/*.test.[jt]s?(x)', 'tests/**/*.spec.[jt]s?(x)'],
-    exclude: ['tests/e2e/**', 'node_modules/**', 'dist/**'],
+    exclude: ['node_modules/**', 'dist/**'],
     coverage: {
       reporter: ['text', 'json', 'html'],
     },
