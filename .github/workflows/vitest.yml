@@ -1,7 +1,7 @@
 name: Unit/integration tests
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
 
 jobs:
   test:
