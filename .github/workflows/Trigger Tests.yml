@@ -1,0 +1,63 @@
+name: Trigger Tests
+on:
+  workflow_dispatch:
+    inputs:
+      suite:
+        type: choice
+        description: Which tests to run
+        options: [bdd, unit, integration, all]
+        default: bdd
+      browser:
+        type: choice
+        description: Playwright browser (for BDD)
+        options: [chromium, firefox, webkit]
+        default: chromium
+      headless:
+        type: boolean
+        description: Run browser headless (for BDD)
+        default: true
+      base_url:
+        type: string
+        description: Base URL for the app (for BDD)
+        default: http://localhost:5173
+      tags:
+        type: string
+        description: Cucumber tags (e.g. @smoke and not @wip)
+        default: ""
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      BROWSER: ${{ inputs.browser }}
+      PLAYWRIGHT_HEADLESS: ${{ inputs.headless }}
+      BASE_URL: ${{ inputs.base_url }}
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - name: Run BDD tests
+        if: ${{ inputs.suite == 'bdd' }}
+        shell: bash
+        run: |
+          CMD="npx cucumber-js -c cucumber.cjs"
+          if [ -n "${{ inputs.tags }}" ]; then
+            CMD="$CMD --tags '${{ inputs.tags }}'"
+          fi
+          if [ "${{ inputs.base_url }}" = "http://localhost:5173" ]; then
+            npx start-server-and-test 'npm run dev' http://localhost:5173 "$CMD"
+          else
+            $CMD
+          fi
+      - name: Run unit/integration tests
+        if: ${{ inputs.suite != 'bdd' }}
+        run: |
+          case "${{ inputs.suite }}" in
+            unit) npm run test:unit ;;
+            integration) npm run test:integration ;;
+            all) npm run test && npm run test:integration ;;
+          esac
